@@ -46,9 +46,6 @@ ARG SV_MAXCLIENTS
 ARG ADMIN_ID
 ARG SV_LICENSEKEY
 
-
-
-
 COPY cfg/dev/template.server.cfg .
 
 RUN envsubst < template.server.cfg > server.cfg

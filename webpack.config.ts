@@ -86,6 +86,7 @@ const server: Configuration = {
 	name: "Server",
 	mode: "production",
 	entry: ["./src/server/index.ts", ...serverEntries, "./src/modules/index.ts"],
+	externals: ["pg-native", "pg-hstore", "supports-color", "bufferutil", "utf-8-validate"],
 	plugins: [
 		///@ts-ignore
 		new WebpackBarPlugin({
