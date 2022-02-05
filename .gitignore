@@ -1,0 +1,16 @@
+fx/cache/**/*
+!fx/cache/.gitkeep
+
+fx/crashes/**/*
+!fx/crashes/.gitkeep
+
+fx/txData/**/*
+!fx/txData/.gitkeep
+
+.idea
+node_modules
+
+db/**/*
+!db/.gitkeep
+
+.env

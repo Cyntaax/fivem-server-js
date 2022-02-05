@@ -1,0 +1,53 @@
+version: '3.4'
+services:
+  fivem:
+    container_name: cyntaax-fivem-server
+    build:
+      context: ./fx
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_USER=$MYSQL_USER
+        - MYSQL_PASSWORD=$MYSQL_PASSWORD
+        - MYSQL_DB=$MYSQL_DB
+        - MYSQL_HOST=$MYSQL_HOST
+        - RCON_PASS=$RCON_PASS
+        - BANNER_DETAIL=$BANNER_DETAIL
+        - BANNER_CONNECTING=$BANNER_CONNECTING
+        - SV_HOSTNAME=$SV_HOSTNAME
+        - STEAM_KEY=$STEAM_KEY
+        - SV_MAXCLIENTS=$SV_MAXCLIENTS
+        - ADMIN_ID=$ADMIN_ID
+        - SV_LICENSEKEY=$SV_LICENSEKEY
+        - FX_VER=$FX_VER
+    stdin_open: true
+    tty: true
+    ports:
+      - "40120:40120"
+      - "30120:30120"
+      - "30120:30120/udp"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      WAIT_HOSTS: db:3306
+    volumes:
+      - /srv/resources/node_modules
+      - ./fx/resources/:/srv/resources
+      - ./fx/streamed_assets/:/srv/resources/[assets]
+      - ./fx/cache:/srv/cache
+      - ./fx/crashes:/srv/crashes
+      - ./fx/txData:/srv/txData
+  db:
+    image: mysql:5.7
+    restart: always
+    command: --sql_mode=""
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DB
+      MYSQL_USER: $MYSQL_USER
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT}:3306"

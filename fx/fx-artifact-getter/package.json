@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "name": "fivem-artifact-getter",
+  "description": "Gets FiveM artifacts",
+  "scripts": {
+    "download": "node ./index.js"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "cheerio": "1.0.0-rc.10"
+  }
+}
