@@ -15,11 +15,10 @@ export class Terminal {
 		console.log("toggling terminal");
 		SendNuiMessage(
 			JSON.stringify({
-				event: "terminal:toggle"
+				event: "web:navigate",
+				page: "/login"
 			})
 		);
-
-		SetNuiFocus(true, true);
 	}
 
 	@NUI("terminalToggle")

@@ -1,13 +1,15 @@
 import { Module } from "citadel";
 import { Sequelize } from "sequelize-typescript";
 import * as mysql from "mysql2";
+import CharacterModel from "./models/CharacterModel";
 import { TestModel } from "./models/TestModel";
+import { UserModel } from "./models/UserModel";
 @Module({
 	name: "db-driver"
 })
 export default class DbDriver {
 	public instance: Sequelize;
-	$onReady() {
+	async $onReady() {
 		const sequelize = new Sequelize({
 			database: GetConvar("mysql_db", ""),
 			username: GetConvar("mysql_user", ""),
@@ -15,7 +17,7 @@ export default class DbDriver {
 			host: GetConvar("mysql_host", ""),
 			dialect: "mysql",
 			dialectModule: mysql,
-			models: [TestModel]
+			models: [TestModel, UserModel, CharacterModel]
 		});
 
 		sequelize.connectionManager
@@ -30,9 +32,14 @@ export default class DbDriver {
 				console.log(`error`, e);
 			});
 
-		sequelize.sync().then(() => {
-			emit("db:ready");
+		await UserModel.sync({
+			alter: true
 		});
+		await CharacterModel.sync({
+			alter: true
+		});
+
+		emit("db:ready");
 
 		this.instance = sequelize;
 	}

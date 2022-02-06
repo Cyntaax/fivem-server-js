@@ -1,3 +1,4 @@
 export default class BaseEventsSv {
-    $onReady(): void;
+    onDbReady(): void;
+    createChar(): Promise<void>;
 }

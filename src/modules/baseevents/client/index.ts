@@ -22,4 +22,14 @@ export default class BaseEvents {
 			this.dead = false;
 		}
 	}
+
+	$onReady() {
+		const tick = setTick(() => {
+			if (NetworkIsSessionActive) {
+				clearTick(tick);
+				emit("base:sessionstarted");
+				emitNet("base:sessionstarted");
+			}
+		});
+	}
 }

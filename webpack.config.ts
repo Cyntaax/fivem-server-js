@@ -203,6 +203,11 @@ const loading: Configuration = {
 			{
 				test: /\.css$/,
 				use: ["style-loader", "css-loader"]
+			},
+			{ test: /\.(png|woff|woff2|eot|ttf|svg)$/, type: "asset/resource" },
+			{
+				test: /\.mp3$/,
+				loader: "file-loader"
 			}
 		]
 	},
