@@ -13,7 +13,7 @@ const App: FC = () => {
 		navigate(data.page);
 	});
 	return (
-		<Routes>
+		<Routes location="/">
 			<Route index element={<Home />} />
 			<Route path="/login" element={<Login />} />
 		</Routes>

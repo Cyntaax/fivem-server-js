@@ -1,4 +1,8 @@
+import PlayerManager from "../../playermanager/server";
 export default class BaseEventsSv {
+    playerManager: PlayerManager;
+    constructor(playerManager: PlayerManager);
     onDbReady(): void;
-    createChar(): Promise<void>;
+    createChar(source: number): Promise<void>;
+    myChars(source: number): Promise<void>;
 }

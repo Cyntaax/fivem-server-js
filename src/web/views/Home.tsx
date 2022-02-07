@@ -1,7 +1,12 @@
 import { FC } from "react";
+import Status from "../components/status";
 
 const Home: FC = () => {
-	return <h1>Home</h1>;
+	return (
+		<div className="home">
+			<Status />
+		</div>
+	);
 };
 
 export { Home };
