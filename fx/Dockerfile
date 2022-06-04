@@ -1,13 +1,13 @@
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
-ENV TZ=Europe/London
+ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt update && apt upgrade -y
 
-RUN apt install ca-certificates curl gettext git gnupg -y
+RUN apt install ca-certificates curl gettext git gnupg xz-utils -y
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 
 RUN apt install nodejs
 
@@ -23,7 +23,7 @@ ARG FX_VER="5104"
 
 RUN cd ./fx-artifact-getter && npm run download ${FX_VER}
 
-RUN cd ./fx-artifact-getter && tar -xvf fx.tar.xz -C /srv
+RUN tar -xvf ./fx-artifact-getter/fx.tar.xz -C /srv
 
 RUN mkdir -p /srv/resources
 
@@ -54,4 +54,4 @@ COPY ./wait .
 
 RUN chmod +x ./wait
 
-CMD ./wait && sh /srv/run.sh
+CMD ./wait && sh /srv/run.sh  +exec server.cfg

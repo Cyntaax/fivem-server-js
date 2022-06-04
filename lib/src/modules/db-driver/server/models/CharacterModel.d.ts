@@ -5,4 +5,5 @@ export default class CharacterModel extends Model {
     userId: string;
     user: UserModel;
     name: string;
+    status_info: PlayerStatus[];
 }

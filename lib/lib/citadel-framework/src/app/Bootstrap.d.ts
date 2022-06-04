@@ -3,4 +3,5 @@
  * @returns {Promise<void>}
  */
 export declare const bootstrap: () => Promise<void>;
-export declare function DoServerCallback(name: string, cb: Function, ...args: any[]): Promise<void>;
+export declare function DoServerCallback(name: string, cb: Function, ...args: any[]): void;
+export declare const AsyncServerCallback: <T = any>(name: string, ...args: any[]) => Promise<T>;

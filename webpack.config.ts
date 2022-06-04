@@ -46,7 +46,7 @@ const client: Configuration = {
 			name: "Client"
 		}),
 		new FxManifestPlugin({
-			files: ["config.json", "web/*"],
+			files: ["config.json", "web/*", "peds.json"],
 			ui_page: "web/index.html",
 			client_scripts: ["client.js"],
 			server_scripts: ["server.js"],
@@ -127,6 +127,9 @@ const web: Configuration = {
 	},
 	mode: "production",
 	entry: "./src/web/main.tsx",
+	optimization: {
+		minimize: false
+	},
 	output: {
 		filename: "bundle.js",
 		path: path.resolve(__dirname, "fx/resources/framework/web")

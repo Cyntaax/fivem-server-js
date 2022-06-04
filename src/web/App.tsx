@@ -1,7 +1,7 @@
 import { FC } from "react";
 import useEvents from "../../lib/hooks/useEvents";
-import Chat from "./components/chat";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { AppearanceView } from "./views/Appearance";
 import { Home } from "./views/Home";
 import { Login } from "./views/Login";
 
@@ -10,12 +10,14 @@ const App: FC = () => {
 	const navigate = useNavigate();
 
 	events.addHandler<{ page: string }>("web:navigate", (data) => {
-		navigate(data.page);
+		console.log(`navigate request`, data.page);
+		navigate(data.page, { replace: true });
 	});
 	return (
-		<Routes location="/">
-			<Route index element={<Home />} />
+		<Routes location="">
+			<Route path="" element={<Home />} />
 			<Route path="/login" element={<Login />} />
+			<Route path="/appearance" element={<AppearanceView />} />
 		</Routes>
 	);
 };

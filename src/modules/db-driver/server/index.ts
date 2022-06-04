@@ -1,15 +1,16 @@
 import { Module } from "citadel";
 import { Sequelize } from "sequelize-typescript";
 import * as mysql from "mysql2";
-import CharacterModel from "./models/CharacterModel";
+import CharacterModel from "../../playermanager/models/CharacterModel";
 import { TestModel } from "./models/TestModel";
-import { UserModel } from "./models/UserModel";
+import { UserModel } from "../../playermanager/models/UserModel";
+import UserCurrencyAccount from "../../currencymanager/models/UserCurrencyAccount";
 @Module({
 	name: "db-driver"
 })
 export default class DbDriver {
 	public instance: Sequelize;
-	async $onReady() {
+	public async $onReady() {
 		const sequelize = new Sequelize({
 			database: GetConvar("mysql_db", ""),
 			username: GetConvar("mysql_user", ""),
@@ -17,7 +18,8 @@ export default class DbDriver {
 			host: GetConvar("mysql_host", ""),
 			dialect: "mysql",
 			dialectModule: mysql,
-			models: [TestModel, UserModel, CharacterModel]
+			models: [TestModel, UserModel, CharacterModel, UserCurrencyAccount],
+			logging: false
 		});
 
 		sequelize.connectionManager
@@ -26,7 +28,7 @@ export default class DbDriver {
 				useMaster: true
 			})
 			.then(() => {
-				console.log(`CONNECTED!`);
+				console.log(`^5[database]: ^3connection success!^7`);
 			})
 			.catch((e) => {
 				console.log(`error`, e);
@@ -37,6 +39,14 @@ export default class DbDriver {
 		});
 		await CharacterModel.sync({
 			alter: true
+		}).catch((e) => {
+			console.log(`error character`, e);
+		});
+
+		await UserCurrencyAccount.sync({
+			alter: true
+		}).catch((e) => {
+			console.log(`error: `, e);
 		});
 
 		emit("db:ready");

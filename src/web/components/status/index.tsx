@@ -1,115 +1,35 @@
 import { useAtom } from "jotai";
-import { createRef, FC, useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { createRef, FC, useEffect, useReducer, useRef, useState } from "react";
 import useEvents from "../../../../lib/hooks/useEvents";
 import { circles } from "../../state";
 
-const Status: FC = () => {
-	const [circles, setCircles] = useState([]);
+const Status: FC = observer(() => {
+	const _circles = circles.circles;
+	const [a, b] = useState([]);
 	const events = useEvents();
-	const [lastPacket, setLastPacket] = useState<any>({});
+	events.addHandler<{ payload: { name: string; value: number; max: number }[] }>("hud:status", (data) => {
+		for (const status of data.payload) {
+			const pct = (status.value / status.max) * 100;
+			updateCircle(status.name, pct);
+		}
+	});
 
-	const cb = useCallback(
-		(data: any) => {
-			console.log(`circles`, JSON.stringify(circles));
-			Object.keys(data).forEach((v) => {
-				updateCircle(circles, v, data[v as keyof typeof data]);
-			});
-		},
-		[circles]
-	);
+	const updateCircle = (name: string, pct: number) => {
+		const idx = _circles.findIndex((v) => v.name === name);
+		if (idx === -1) {
+			return;
+		}
 
-	const updateCircle = useCallback(
-		(_circles: any[], name: string, pct: number) => {
-			const idx = _circles.findIndex((v) => v.name === name);
-			if (idx === -1) {
-				console.log(`not found`, _circles);
-				return;
-			}
-
-			const data = _circles[idx];
-			data.circumference = 2 * Math.PI * parseInt(data.r);
-			const offset = (data.circumference - (pct / 100) * data.circumference).toString();
-			data.strokeDashOffset = offset;
-			data.strokeDashArray = [data.circumference.toString(), data.circumference.toString()];
-			const newArr = [..._circles];
-			newArr[idx] = data;
-			setCircles([...newArr]);
-		},
-		[circles]
-	);
-
-	const ghettoMemo = useCallback(
-		(data) => {
-			cb(data);
-		},
-		[circles]
-	);
-
-	useEffect(() => {
-		console.log(`CONSTRUCTING THE THING`, JSON.stringify(circles));
-	}, [cb]);
-	events.addHandler<{ health: number; energy: number; stamina: number }>("hud:status", ghettoMemo);
-
-	useEffect(() => {
-		setCircles([
-			{
-				name: "health",
-				className: "progress-ring__hours",
-				strokeDashOffset: "0",
-				stroke: "#b71c1c",
-				strokeWidth: "20",
-				strokeLineCap: "round",
-				cx: "150",
-				cy: "150",
-				r: "90",
-				fill: "transparent",
-				circumference: 0,
-				strokeDashArray: ["0", "0"]
-			},
-			{
-				name: "energy",
-				className: "progress-ring__energy",
-				strokeDashOffset: "0",
-				stroke: "#ffb300",
-				strokeWidth: "20",
-				strokeLineCap: "round",
-				cx: "150",
-				cy: "150",
-				r: "69",
-				fill: "transparent",
-				circumference: 0,
-				strokeDashArray: ["0", "0"]
-			},
-			{
-				name: "stamina",
-				className: "progress-ring__energy",
-				strokeDashOffset: "0",
-				stroke: "#388e3c",
-				strokeWidth: "20",
-				strokeLineCap: "round",
-				cx: "150",
-				cy: "150",
-				r: "48",
-				fill: "transparent",
-				circumference: 0,
-				strokeDashArray: ["0", "0"]
-			},
-			{
-				name: "breath",
-				className: "progress-ring__energy",
-				strokeDashOffset: "0",
-				stroke: "#0099cc",
-				strokeWidth: "5",
-				strokeLineCap: "round",
-				cx: "150",
-				cy: "150",
-				r: "32",
-				fill: "transparent",
-				circumference: 0,
-				strokeDashArray: ["0", "0"]
-			}
-		]);
-	}, []);
+		const data = _circles[idx];
+		data.circumference = 2 * Math.PI * parseInt(data.r);
+		const offset = (data.circumference - (pct / 100) * data.circumference).toString();
+		data.strokeDashOffset = offset;
+		data.strokeDashArray = [data.circumference.toString(), data.circumference.toString()];
+		const newArr = [..._circles];
+		newArr[idx] = data;
+		circles.circles = [...newArr];
+	};
 
 	return (
 		<div className="status">
@@ -118,7 +38,7 @@ const Status: FC = () => {
 				<circle className="bg" stroke="#61E700" strokeWidth="20" cx="150" cy="150" r="69" fill="transparent" />
 				<circle className="bg" stroke="#28D0DB" strokeWidth="20" cx="150" cy="150" r="48" fill="transparent" />
 
-				{circles.map((v, i) => {
+				{_circles.map((v, i) => {
 					return (
 						<circle
 							key={i}
@@ -126,7 +46,7 @@ const Status: FC = () => {
 							stroke={v.stroke}
 							strokeWidth={v.strokeWidth}
 							strokeDashoffset={v.strokeDashOffset}
-							strokeLinecap={v.strokeLineCap}
+							strokeLinecap={v.strokeLineCap as "round"}
 							cx={v.cx}
 							cy={v.cy}
 							fill={v.fill}
@@ -149,6 +69,6 @@ const Status: FC = () => {
 			</svg>
 		</div>
 	);
-};
+});
 
 export default Status;

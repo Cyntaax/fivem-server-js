@@ -1,6 +1,6 @@
 import { Module, Event, NetEvent } from "citadel";
 import { Util } from "../../../util";
-import { UserModel } from "../../db-driver/server/models/UserModel";
+import { UserModel } from "../../playermanager/models/UserModel";
 import PlayerManager from "../../playermanager/server";
 
 @Module({
@@ -14,6 +14,7 @@ import PlayerManager from "../../playermanager/server";
 })
 export default class ConnectionManager {
 	constructor(public playerManager: PlayerManager) {}
+
 	@Event("playerConnecting")
 	async onPlayerConnecting(name: string, setKickReason: KickFunc, deferral: Deferral) {
 		const source = global.source;

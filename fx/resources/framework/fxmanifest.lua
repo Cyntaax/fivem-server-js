@@ -13,7 +13,8 @@ server_scripts {
 
 files {
 	"config.json",
-"web/*"
+"web/*",
+"peds.json"
 }
 
 ui_page "web/index.html"

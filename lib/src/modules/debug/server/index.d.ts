@@ -5,4 +5,5 @@ export default class BaseEventsSv {
     onDbReady(): void;
     createChar(source: number): Promise<void>;
     myChars(source: number): Promise<void>;
+    setChar(source: number): Promise<void>;
 }

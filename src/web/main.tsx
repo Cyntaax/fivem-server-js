@@ -4,6 +4,11 @@ import App from "./App";
 import "./app.scss";
 import * as React from "react";
 
+///@ts-ignore
+window.process = {
+	env: {}
+};
+
 ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>

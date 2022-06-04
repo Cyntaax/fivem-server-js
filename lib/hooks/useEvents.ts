@@ -23,7 +23,6 @@ const useEvents = () => {
 			return;
 		}
 		const eventListener = (ev: MessageEvent) => {
-			console.log("data", JSON.stringify(ev.data));
 			const existing = onEvent.handlers.get(ev.data.event);
 			if (existing) {
 				existing.forEach((v) => {

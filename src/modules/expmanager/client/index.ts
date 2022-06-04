@@ -20,7 +20,7 @@ export default class EXPManager {
 			return;
 		}
 
-		let currentLevel = this.getLevelFromXP(this.currentXP);
+		const currentLevel = this.getLevelFromXP(this.currentXP);
 		let currentXPWithAdded = this.currentXP + xp;
 		let newLevel = this.getLevelFromXP(currentXPWithAdded);
 		let levelDifference = 0;
@@ -62,7 +62,7 @@ export default class EXPManager {
 			return;
 		}
 
-		let currentLevel = this.getLevelFromXP(this.currentXP);
+		const currentLevel = this.getLevelFromXP(this.currentXP);
 		let currentXPWithRemovedXP = this.currentXP - xp;
 		let newLevel = this.getLevelFromXP(currentXPWithRemovedXP);
 		let levelDifference = 0;
@@ -106,10 +106,10 @@ export default class EXPManager {
 		}
 
 		if (level > 100) {
-			let baseXP = this.ranks[99];
-			let extraAddPerLevel = 50;
+			const baseXP = this.ranks[99];
+			const extraAddPerLevel = 50;
 			let minAddPerLevel = 28550;
-			let baseLevel = level - 100;
+			const baseLevel = level - 100;
 			let currXPNeeded = 0;
 			for (let i = 0; i < baseLevel; i++) {
 				minAddPerLevel += 50;
@@ -130,10 +130,10 @@ export default class EXPManager {
 		}
 
 		if (level > 99) {
-			let baseXP = this.ranks[99];
-			let extraPerLevel = 50;
+			const baseXP = this.ranks[99];
+			const extraPerLevel = 50;
 			let minAddPerLevel = 28550;
-			let baseLevel = level - 99;
+			const baseLevel = level - 99;
 			let currXPNeeded = 0;
 			for (let i = 0; i < baseLevel; i++) {
 				minAddPerLevel += 50;
@@ -152,7 +152,7 @@ export default class EXPManager {
 		}
 
 		if (search < this.ranks[99]) {
-			let currLevelFound = -1;
+			const currLevelFound = -1;
 			let currLevelScan = 0;
 			for (const xp of this.ranks) {
 				currLevelScan++;
@@ -164,7 +164,7 @@ export default class EXPManager {
 		} else {
 			let currLevelFound = -1;
 			const baseXP = this.ranks[99];
-			let extraPerLevel = 50;
+			const extraPerLevel = 50;
 			let minAddPerLevel = 28550;
 
 			let currXPNeeded = 0;

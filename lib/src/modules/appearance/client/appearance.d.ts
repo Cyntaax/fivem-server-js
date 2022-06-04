@@ -1,0 +1,14 @@
+export declare const pedModels: string[];
+export declare function getPedAppearance(ped: number): PedAppearance;
+export declare function setPlayerModel(model: string): Promise<void>;
+export declare function setPedHeadBlend(ped: number, headBlend: PedHeadBlend): void;
+export declare function setPedFaceFeatures(ped: number, faceFeatures: PedFaceFeatures): void;
+export declare function setPedHeadOverlays(ped: number, headOverlays: PedHeadOverlays): void;
+export declare function setPedHair(ped: number, hair: PedHair): void;
+export declare function setPedEyeColor(ped: number, eyeColor: number): void;
+export declare function setPedComponent(ped: number, component: PedComponent): void;
+export declare function setPedComponents(ped: number, components: PedComponent[]): void;
+export declare function setPedProp(ped: number, prop: PedProp): void;
+export declare function setPedProps(ped: number, props: PedProp[]): void;
+export declare function setPlayerAppearance(appearance: PedAppearance): Promise<void>;
+export declare function init(): void;

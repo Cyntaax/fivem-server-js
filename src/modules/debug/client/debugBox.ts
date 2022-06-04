@@ -74,7 +74,7 @@ class UI {
 }
 
 export class DebugBox {
-	drawingTick: number = 0;
+	drawingTick = 0;
 	height = 0.2;
 	width = 0.2;
 	x = 0.8;

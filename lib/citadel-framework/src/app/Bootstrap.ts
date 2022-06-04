@@ -109,9 +109,14 @@ async function TriggerServerCallback(name: string, requestId: number, _source: n
 			const targetMethod = Cache.serverCallbacks[module][method];
 			console.log(`executing ${method} on module ${module}`);
 			if (Cache.moduleCache[module] !== undefined) {
-				console.log(`performing on something`);
-				const res = await Promise.resolve(Cache.moduleCache[module][targetMethod](source, ...args));
-				cb(res);
+				console.log(`performing on something`, typeof Cache.moduleCache[module][targetMethod]);
+				try {
+					const res = await Promise.resolve(Cache.moduleCache[module][targetMethod](_source, ...args));
+					console.log(`res was`, res);
+					cb(res);
+				} catch (e) {
+					console.log(`error doing callback on ${module}.${targetMethod}`, e);
+				}
 			} else {
 				console.log(`looks like it was an external callback`);
 				global.exports[module][targetMethod](
@@ -131,7 +136,7 @@ async function TriggerServerCallback(name: string, requestId: number, _source: n
 	}
 }
 
-export async function DoServerCallback(name: string, cb: Function, ...args: any[]) {
+export function DoServerCallback(name: string, cb: Function, ...args: any[]) {
 	emitNet("triggerServerCallback", name, Cache.requestId, ...args);
 	Cache.pendingCallbacks[Cache.requestId] = cb;
 	if (Cache.requestId < 65535) {
@@ -140,3 +145,15 @@ export async function DoServerCallback(name: string, cb: Function, ...args: any[
 		Cache.requestId = 0;
 	}
 }
+
+export const AsyncServerCallback = <T = any>(name: string, ...args: any[]): Promise<T> => {
+	return new Promise<T>((resolve, reject) => {
+		DoServerCallback(
+			name,
+			(results: any) => {
+				resolve(results as unknown as any);
+			},
+			...args
+		);
+	});
+};

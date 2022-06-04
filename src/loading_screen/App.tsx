@@ -6,7 +6,7 @@ import soundFile from "./loading.mp3";
 
 const App: FC = () => {
 	useEffect(() => {
-		let sound = new Audio(soundFile);
+		const sound = new Audio(soundFile);
 		sound.volume = 0.5;
 		sound.play();
 		return () => {

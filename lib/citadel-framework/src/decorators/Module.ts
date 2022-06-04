@@ -298,7 +298,7 @@ export const assumeType = (input: any) => {
 	if (!isNaN(parseInt(input))) {
 		return {
 			type: "Number",
-			value: parseInt(input)
+			value: Number(input)
 		};
 	}
 
